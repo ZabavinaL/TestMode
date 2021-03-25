@@ -12,6 +12,10 @@ import static io.restassured.RestAssured.given;
 
 
 public class DataGenerator {
+
+    private DataGenerator() {
+    }
+
     private static RequestSpecification requestSpec = new RequestSpecBuilder()
             .setBaseUri("http://localhost")
             .setPort(9999)
@@ -20,7 +24,7 @@ public class DataGenerator {
             .log(LogDetail.ALL)
             .build();
 
-    public static void User(RegistrationData registration) {
+    public static void registerUser(RegistrationData registration) {
 
         given()
                 .spec(requestSpec)
@@ -31,13 +35,14 @@ public class DataGenerator {
                 .statusCode(200);
     }
 
+
     public static RegistrationData activeUser() {
         Faker faker = new Faker(new Locale("en"));
         String login = faker.name().username();
         String password = faker.internet().password();
         String status = "active";
         RegistrationData activeUser = new RegistrationData(login, password, status);
-        User(activeUser);
+        registerUser(activeUser);
         return activeUser;
     }
 
@@ -47,27 +52,41 @@ public class DataGenerator {
         String password = faker.internet().password();
         String status = "blocked";
         RegistrationData blockedUser = new RegistrationData(login, password, status);
-        User(blockedUser);
+        registerUser(blockedUser);
         return blockedUser;
     }
 
-    public static RegistrationData invalidLogin() {
-        Faker faker = new Faker(new Locale("en"));
-        String login = "иван";
-        String password = faker.internet().password();
-        String status = "active";
-        RegistrationData invalidLogin = new RegistrationData(login, password, status);
-        User(invalidLogin);
-        return invalidLogin;
+//    public static RegistrationData invalidLogin() {
+//        Faker faker = new Faker(new Locale("ru"));
+//        String login = faker.name().fullName();
+//        String password = faker.internet().password();
+//        String status = "active";
+//        RegistrationData invalidLogin = new RegistrationData(login, password, status);
+//        registerUser(invalidLogin);
+//        return invalidLogin;
+//
+//    }
+
+    public static String invalidLogin(String status) {
+        Faker faker = new Faker(new Locale("ru"));
+        return faker.name().fullName();
+
     }
 
-    public static RegistrationData invalidPassword() {
-        Faker faker = new Faker(new Locale("en"));
-        String login = faker.name().username();
-        String password = "1";
-        String status = "active";
-        RegistrationData invalidLogin = new RegistrationData(login, password, status);
-        User(invalidLogin);
-        return invalidLogin;
+//    public static RegistrationData invalidPassword() {
+//        Faker faker = new Faker(new Locale("en"));
+//        String login = faker.name().username();
+//        String password = "1";
+//        String status = "active";
+//        RegistrationData invalidLogin = new RegistrationData(login, password, status);
+//        registerUser(invalidLogin);
+//        return invalidLogin;
+//    }
+
+    public static String invalidPassword(String status) {
+        Faker faker = new Faker(new Locale("ru"));
+        return faker.internet().password();
+
     }
+
 }
