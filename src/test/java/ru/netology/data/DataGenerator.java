@@ -8,6 +8,8 @@ import com.github.javafaker.Faker;
 
 import java.util.Locale;
 
+import lombok.val;
+
 import static io.restassured.RestAssured.given;
 
 
@@ -67,11 +69,11 @@ public class DataGenerator {
 //
 //    }
 
-    public static String invalidLogin(String status) {
-        Faker faker = new Faker(new Locale("ru"));
-        return faker.name().fullName();
-
-    }
+//    public static String invalidLogin(String status) {
+//        Faker faker = new Faker(new Locale("ru"));
+//        return faker.name().fullName();
+//
+//    }
 
 //    public static RegistrationData invalidPassword() {
 //        Faker faker = new Faker(new Locale("en"));
@@ -83,10 +85,28 @@ public class DataGenerator {
 //        return invalidLogin;
 //    }
 
-    public static String invalidPassword(String status) {
-        Faker faker = new Faker(new Locale("ru"));
-        return faker.internet().password();
+//    public static String invalidPassword(String status) {
+//        Faker faker = new Faker(new Locale("ru"));
+//        return faker.internet().password();
+//
+//    }
 
+    public static RegistrationData getInvalidPasswordUser() {
+
+        val faker = new Faker(new Locale("en"));
+        val login = faker.name().username();
+
+        registerUser(new RegistrationData(login, faker.internet().password(), "active"));
+        return new RegistrationData(login, faker.internet().password(), "active");
+    }
+
+    public static RegistrationData getInvalidLoginUser() {
+
+        val faker = new Faker(new Locale("en"));
+        val password = faker.internet().password();
+
+        registerUser(new RegistrationData(faker.name().username(), password,"active"));
+        return new RegistrationData(faker.name().username(), password,"active");
     }
 
 }

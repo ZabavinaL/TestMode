@@ -1,6 +1,7 @@
 package ru.netology.tmode;
 
 import com.codeborne.selenide.Condition;
+import lombok.val;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import ru.netology.data.DataGenerator;
@@ -62,4 +63,32 @@ public class TestModeTest {
 //                .shouldHave(text("Неверно указан логин или пароль"))
 //                .shouldBe(Condition.visible, Duration.ofSeconds(15));
 //    }
+
+    @Test
+    void shouldGetErrorIfInvalidPasswordEntered() {
+
+        val registrationData = DataGenerator.getInvalidPasswordUser();
+
+        $("[data-test-id = 'login'] input").setValue(registrationData.getLogin());
+        $("[data-test-id = 'password'] input").setValue(registrationData.getPassword());
+        $("button").click();
+        $("[data-test-id = 'error-notification'] .notification__content")
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(text("Неверно указан логин или пароль"));
+
+    }
+
+    @Test
+    void shouldGetErrorIfInvalidLoginEntered() {
+
+        val registrationData = DataGenerator.getInvalidLoginUser();
+
+        $("[data-test-id = 'login'] input").setValue(registrationData.getLogin());
+        $("[data-test-id = 'password'] input").setValue(registrationData.getPassword());
+        $("button").click();
+        $("[data-test-id = 'error-notification'] .notification__content")
+                .shouldBe(Condition.visible, Duration.ofSeconds(15))
+                .shouldHave(text("Неверно указан логин или пароль"));
+
+    }
 }
